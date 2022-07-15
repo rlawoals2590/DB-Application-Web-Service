@@ -1,4 +1,4 @@
 # Competition-API
 
 ### DB
-#### 'SELECT, INSERT'
+#### SELECT, INSERT
