@@ -50,13 +50,10 @@ def create():
 @app.route('/delete/', methods=['GET', 'POST'])
 def delete():
     if request.method == 'GET':
-        content = '''
-            <form action="http://127.0.0.1:5000/delete/" method="POST">
-            <p><input type="text" name="product_name" placeholder="product_name"></p>
-            <p><input type="text" name="product_mart" placeholder="product_mart"></p>
-            <p><input type="submit" value="DELECT"></p>
-        '''
-        return content
+        mycursor = mysql.new_cursor(dictionary=True)
+        mycursor.execute(SELECT_SQL)
+        myresult = mycursor.fetchall()
+        return render_template('./delete.html', data=myresult) 
     elif request.method == 'POST':
         name = request.form['product_name']
         mart = request.form['product_mart']
