@@ -33,6 +33,8 @@ def create():
             <p><input type="number" name="product_price" placeholder="product_price"></p>
             <p><input type="text" name="product_mart" placeholder="product_mart"></p>
             <p><input type="submit" value="INSERT"></p>
+            </form>
+            <a href="http://127.0.0.1:5000"><input type="submit" value="Cancel"></a>
         '''
         return content
     elif request.method == 'POST':
