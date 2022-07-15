@@ -1,4 +1,3 @@
-from unittest import result
 from flask import Flask, render_template, request, jsonify
 from flask_mysql_connector import MySQL
 
@@ -14,7 +13,7 @@ SELECT_SQL = 'SELECT product_id, product_name, product_price, product_mart FROM 
 
 @app.route('/')
 def Index():
-    return render_template('index.html')
+    return render_template('./index.html')
 
 @app.route('/select/', methods=['POST'])
 def SELECT():
@@ -22,7 +21,7 @@ def SELECT():
         mycursor = mysql.new_cursor(dictionary=True)
         mycursor.execute(SELECT_SQL)
         myresult = mycursor.fetchall()
-        return str(myresult)
+        return render_template('./success.html', data=myresult) 
 
 @app.route('/insert/', methods=['GET', 'POST'])
 def create():
@@ -46,7 +45,27 @@ def create():
         mycursor.execute(INSERT_SQL)
         conn = mysql.connection
         conn.commit()
-        return "was inserted."
+        return render_template('./success.html')
+
+@app.route('/delete/', methods=['GET', 'POST'])
+def delete():
+    if request.method == 'GET':
+        content = '''
+            <form action="http://127.0.0.1:5000/delete/" method="POST">
+            <p><input type="text" name="product_name" placeholder="product_name"></p>
+            <p><input type="text" name="product_mart" placeholder="product_mart"></p>
+            <p><input type="submit" value="DELECT"></p>
+        '''
+        return content
+    elif request.method == 'POST':
+        name = request.form['product_name']
+        mart = request.form['product_mart']
+        DELETE_SQL = 'DELETE FROM storage.storags1s WHERE product_name = "{0}" AND product_mart = "{1}"'.format(name, mart)
+        mycursor = mysql.new_cursor(dictionary=True)
+        mycursor.execute(DELETE_SQL)
+        conn = mysql.connection
+        conn.commit()
+        return render_template('./success.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
